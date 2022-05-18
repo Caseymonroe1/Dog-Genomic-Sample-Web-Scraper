@@ -20,7 +20,9 @@ with open('cleanedsamplenames.txt') as f:
 
 html=""
 rows=1
+
 for line in lines:
+    #for each sample in the sample names file, get the link and html of the page
     link="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc="+line
     driver.get(link)
     soup = bs4.BeautifulSoup(driver.page_source, 'html.parser')
@@ -28,6 +30,8 @@ for line in lines:
     html=soup
     
     for thelines in html:
+        #for each line in the html, check if it contains breed and gender
+        #then add each to the spreadsheet if they are present in the page
         worksheet.write(rows,0,line)
         i=""
         if "breed: " in str(thelines):
@@ -42,7 +46,8 @@ for line in lines:
             print(breedString)
             worksheet.write(rows,1,breedString)
         i=""
-        if "gender: " in str(thelines):
+        #both gender and sex were used in the pages, so the two if statements for those
+        if ("gender: " or "Gender: ")  in str(thelines):
             gender=re.search("gender: ",str(thelines))
             genderString=""
             gendernum=gender.start()+8
@@ -53,7 +58,7 @@ for line in lines:
             genderString=genderString.rstrip(genderString[-1])
             print(genderString)
             worksheet.write(rows,2,genderString)
-        if "Sex: " in str(thelines):
+        if ("Sex: " or "sex: ") in str(thelines):
             gender=re.search("Sex: ",str(thelines))
             genderString=""
             gendernum=gender.start()+5
@@ -64,13 +69,8 @@ for line in lines:
             genderString=genderString.rstrip(genderString[-1])
             print(genderString)
             worksheet.write(rows,2,genderString)
-        
         rows+=1
+        #saving the spreadsheet every iteration isn't necessary but useful for testing
         workbook.save('samples.xls')
 workbook.save('samples.xls')
-#workbook.save()
 driver.quit()
-#iterate through each sample by changing the url and scrape the data, adding to excel spreadsheet
-
-# driver.find_element_by_name("q").send_keys("Selenium")
-# driver.find_element_by_name("btnK").click()
