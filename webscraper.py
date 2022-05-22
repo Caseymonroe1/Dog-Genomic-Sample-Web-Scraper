@@ -3,7 +3,7 @@ import re
 import bs4
 import xlwt
 from xlwt import Workbook
-from xlwt import Workbook
+from xlwt import Worksheet
 PATH = "C:\\Program Files (x86)\chromedriver.exe"
 driver=webdriver.Chrome(PATH)
 
@@ -15,6 +15,7 @@ worksheet.write(0,1,"Breed")
 worksheet.write(0,2,"Gender")
 worksheet.write(0,3,"Link")
 worksheet.write(0,4,"Date of Last Edit")
+worksheet.write(0,5,"IDAT or not")
 #opening sample names file
 with open('cleanedsamplenames.txt') as f:
     lines = f.readlines()
@@ -32,6 +33,13 @@ for line in lines:
     worksheet.write(rows,3,link)
     statusString=""
     i=""
+    #find the file type of the sample
+    if "IDAT" in str(html):
+        worksheet.write(rows,5,"IDAT")
+    else:
+        worksheet.write(rows,5,"Not IDAT")
+    
+    #get the date of last edit
     if "Status" in str(html): 
         status=re.search("Status",str(html))
         statusend=status.end()+20
@@ -81,8 +89,10 @@ for line in lines:
         print(genderString)
         worksheet.write(rows,2,genderString)
     rows+=1
-        #saving the spreadsheet every iteration isn't necessary but useful for testing
-    workbook.save('samples.xls')
+
+
+    #saving the spreadsheet every iteration isn't necessary but useful for testing
+    
 workbook.save('samples.xls')
 driver.quit()
 
