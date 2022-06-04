@@ -1,4 +1,4 @@
-# Dog-Genomics-Web-Scraper
+# Dog-Genomic-Sample-Web-Scraper
 Web scraper that grabs dog genome samples, adds the sample data to an excel spreadsheet
 In this project, I created a database of information on samples of dog genomic data from the National Center for Biotechnology Information website, and used this database to create multiple charts that visualized trends in the data.  I used Python's Selenium, BeautifulSoup, and Excel Writer(xlwt) libraries for the web scraper, and R to create visualizations of the data.
 
